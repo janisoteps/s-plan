@@ -1,0 +1,18 @@
+<template name="task">
+	<div class="post">
+		<li>Eating at <a href="/{{_id}}"><strong>{{restaurant}}</strong></a> by <a href="/people/{{owner}}"><strong>{{user}}{{fbusername}}</strong></a>
+		<button class="join"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Join</button><a href="/{{_id}}">
+		<button class="view-button"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> View Plan</button></a></li>
+		<li>Restaurant address: {{address}}</li>
+		<li>The date of dinner: {{date}}</li>
+		<li><strong>{{user}}{{fbusername}}</strong> says: {{comment}}</li>
+		{{#if opengroup}}<li>I want an open group booking</li>{{/if}}
+		{{#if couples}}<li>I want to split tables between couples</li>{{/if}}
+		<li>Date Created: {{createdAt}}{{#if currentUser}}<button class="delete">Delete</button>{{/if}}</li>
+		<li>Buddies joined: {{#each joiners}}{{> buddylist}}{{/each}}</li>
+	</div>
+</template>
+
+<template name="buddylist" data-role="buddylist">
+	<li><a href="/people/{{budid}}">{{budname}} {{budfbname}}</a></li>
+</template>

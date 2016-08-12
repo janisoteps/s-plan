@@ -1,0 +1,144 @@
+<body>
+  <div class="menu panel panel-default panel-body">
+        <div class="menuhome">
+          <a  href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></div>
+          <div class="menuprofile">
+          <a  href="/profile/{{currentUser._id}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Profile</a></div>
+          <div class="menulogin">{{> loginButtons}}</div>
+  </div>
+</body>
+
+<template name="mainLayout">
+  <main>
+    {{>Template.dynamic template=content}}
+  </main>
+</template>
+
+<template name="seatingHome">
+  <div class="container">
+    <header>
+      
+      <h1>Seating Plan</h1>
+      <h3>Meet up with other people and share restaurant bookings</h3>
+      <div id="inputform" class="hideOverflow">
+      {{#if currentUser}}
+        <fieldset class="form-group">
+          <button id="formopenbutton" class="openform btn btn-primary">Make a new plan</button>
+        </fieldset>
+      {{/if}}
+      {{#if currentUser}}
+        <form class="new-task">
+          <fieldset class="form-group">
+            <textarea type="text" rows="1" class="form-control" name="restaurant" placeholder="Type the restaurant name" ></textarea>
+          </fieldset>
+          <fieldset class="form-group">
+            <textarea type="text" rows="1" class="form-control" name="address" placeholder="Type the restaurant address" ></textarea>
+          </fieldset>
+          <fieldset>
+            <label for="plan-date">When do you want do the have dinner?</label>
+            <input type="date" rows="1" class="form-control" id="plan-date" name="date" placeholder="mm/dd/yyyy">
+          </fieldset>
+          <fieldset class="form-group">
+            <textarea type="text" class="form-control plan-comment" name="comment" placeholder="Tell others about yourself, time you want to book etc..." ></textarea>
+          </fieldset>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="opengroup" value="opengroup"> I prefer an open group booking, I want to make new friends!
+            </label>
+            <label>
+              <input type="checkbox" name="couples" value="couples"> I would like to split the table... but have a romantinc dinner for two!
+            </label>
+          </div>
+          <button class="button btn btn-primary plan-submit-btn"> <h4>Post a Seating Plan</h4></button>
+        </form>
+      {{/if}}
+      </div>
+    </header>
+
+    <ul>
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="singlePlan">
+  {{#if Template.subscriptionsReady}}
+    {{#with plan}}
+      <div class="container panel post single-plan-controls">
+        <li>
+          Eating at <strong>{{restaurant}}</strong> by <a href="/people/{{owner}}"><strong>{{user}}{{fbusername}}</strong></a>
+        </li>
+          <a href="/"><button href="/" class="single-plan-back"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</button></a>
+          {{#if currentUser}}<a href="/"><button class="delete single-plan-delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button></a>{{/if}}
+          <button class="join single-plan-join"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Join</button>
+      </div>
+      <div class="panel container post"> 
+        <li>Restaurant address: {{address}}</li>
+        <li>The date of dinner: {{date}}</li>
+        <li><strong>{{user}}{{fbusername}}</strong> says: {{comment}}</li>
+        {{#if opengroup}}<li>I want an open group booking</li>{{/if}}
+        {{#if couples}}<li>I want to split tables between couples</li>{{/if}}
+        <li>Date Created: {{createdAt}}</li>
+        <li>Buddies joined: {{#each joiners}}{{> buddylist}}{{/each}}</li>
+      </div>
+      <br>
+      <div class="panel container plan-chat-panel">
+        <form class="new-plan-chat">
+          <fieldset class="form-group">
+            <label for="exampleInputEmail1">Chat:</label>
+            <input type="text" class="form-control" name="singplePlanChat" placeholder="Say hi to others">
+            <small class="text-muted">This is a public chat to organize the plan.</small>
+          </fieldset>
+          <div class="chat-submit"><button class="button btn btn-primary chat-button">Say</button></div>
+        </form>
+      </div>
+      <br>
+      <div class="panel container plan-chat-panel">
+      {{#each chatters}}{{> chatlist}}{{/each}}
+      </div>
+    {{/with}}
+  {{else}}
+      <p>Loading...</p>
+  {{/if}}
+</template>
+
+<template name="userProfile2">
+  {{#if Template.subscriptionsReady}}
+    {{#with guy}}
+      <div class="panel container">
+        <div class="profilename">
+        {{username}}
+        {{fbusername}}
+        </div>
+        <br>
+        <div class="profilephoto">
+        <img id="profpic" src="{{profilephoto}}">
+        </div>
+        <br>
+
+      </div>
+    {{/with}}
+    {{else}}
+      <p>Loading...</p>
+  {{/if}}
+</template>
+
+<template name="myprofile">
+  <div class="panel container">
+    <div class="profilename">
+      {{profile_name}}{{username}}
+      <br>
+    </div>
+    <p>Living in {{profilecity}}</p>
+      <div class="profilephoto">
+        <img id="profpic" src="{{profilephoto}}">
+      </div>
+  </div>
+</template>
+
+<template name="chatlist" data-role="chatlist">
+  <li><a href="/people/{{author}}"><strong>{{authorusername}}{{authorfbname}}</strong></a> says: {{comment}}</li>
+</template>
+ 
