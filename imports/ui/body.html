@@ -1,14 +1,24 @@
-<body>
-  <div class="menu panel panel-default panel-body">
-        <div class="menuhome">
-          <a  href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></div>
-          <div class="menuprofile">
-          <a  href="/profile/{{currentUser._id}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Profile</a></div>
-          <div class="menulogin">{{> loginButtons}}</div>
-  </div>
-</body>
+<template name="Navbar">
+{{#if Template.subscriptionsReady}}
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="col-md-12 topmenu"><img class="img-circle" id="navpic" src="{{profilephoto}}">
+      <div id="loginbtns">
+        {{> loginButtons}}
+      </div>
+    </div>
+      <div class="col-md-12 bottommenu">
+        <div class="menubuttons">
+                <a  href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a>
+                <a  href="/about/us"><span class="glyphicon glyphicon-record" aria-hidden="true"></span> About</a>
+              <a  href="/profile/{{currentUser._id}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Profile</a>
+        </div>
+    </div>
+  </nav>
+{{/if}}
+</template>
 
 <template name="mainLayout">
+  {{>Navbar}}
   <main>
     {{>Template.dynamic template=content}}
   </main>
@@ -19,7 +29,7 @@
     <header>
       
       <h1>Seating Plan</h1>
-      <h3>Meet up with other people and share restaurant bookings</h3>
+      <h3>Jump the queue together</h3>
       <div id="inputform" class="hideOverflow">
       {{#if currentUser}}
         <fieldset class="form-group">
@@ -56,9 +66,11 @@
     </header>
 
     <ul>
-      {{#each tasks}}
-        {{> task}}
-      {{/each}}
+      <div class="postdiv">
+        {{#each tasks}}
+          {{> task}}
+        {{/each}}
+      </div>
     </ul>
   </div>
 </template>
@@ -131,7 +143,7 @@
       {{profile_name}}{{username}}
       <br>
     </div>
-    <p>Living in {{profilecity}}</p>
+    <!--<p>Living in {{profilecity}}</p>-->
       <div class="profilephoto">
         <img id="profpic" src="{{profilephoto}}">
       </div>
@@ -140,5 +152,15 @@
 
 <template name="chatlist" data-role="chatlist">
   <li><a href="/people/{{author}}"><strong>{{authorusername}}{{authorfbname}}</strong></a> says: {{comment}}</li>
+</template>
+
+<template name="about">
+  <div class="panel container">
+    <div class="aboutpost">
+      <img id="aboutpic" src="/London.jpg">
+      Seating Plan came up as an idea when once my friend tried to book a table for two but the restaurant would let book only tables for a minimum of 6 people. 
+      So we realized it would be nice to buddy up with other people that would like to have a meal in this restaurant and book a table together. Seating Plan was born! 
+    </div>
+  </div>
 </template>
  

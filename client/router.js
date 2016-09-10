@@ -21,3 +21,9 @@ FlowRouter.route('/profile/:userid', {
     BlazeLayout.render("mainLayout", {content: "myprofile"});
   }
 });
+
+FlowRouter.route('/about/us', {
+  action: function() {
+    BlazeLayout.render("mainLayout", {content: "about"});
+  }
+});
