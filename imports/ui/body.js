@@ -54,6 +54,33 @@ Template.myprofile.onCreated(function() {
   });
 });
 
+Template.Navbar.onCreated(function() {
+  var self = this;
+  self.autorun(function() {
+  self.subscribe('otherUsers'); 
+  self.subscribe('otherFbUsers');
+  });
+});
+Template.Navbar.helpers({
+  profilephoto() {
+  var userphotoid = Meteor.user;
+      try{
+        if(Meteor.users.findOne(userphotoid).services.facebook){ 
+          var fbpiclink = "http://graph.facebook.com/" + Meteor.users.findOne(userphotoid).services.facebook.id + "/picture/?type=large";
+        return  fbpiclink;
+        }
+        else {
+          return "../blank-profile-picture.png"
+        }
+      }
+      finally{
+        //return fbpiclink;
+      }
+    }
+});
+    
+
+
 Template.seatingHome.helpers({
   tasks() {
     return Tasks.find({}, { sort: { createdAt: -1 } });
@@ -190,6 +217,8 @@ Template.myprofile.helpers({
     try{
       if(Meteor.user().services.facebook){ 
         var fbpiclink = "http://graph.facebook.com/" + Meteor.user().services.facebook.id + "/picture/?type=large";
+        var usr = Meteor.user().services.facebook.id;
+        console.log(usr);
       return  fbpiclink;
       }
       else {
@@ -254,7 +283,7 @@ Template.seatingHome.events({
             target.comment.value = '';
             target.opengroup.checked = false;
             target.couples.checked = false;
-            document.getElementById("inputform").style.height = "40px"; 
+            document.getElementById("inputform").style.height = "60px"; 
           }
         }
       }
@@ -263,11 +292,11 @@ Template.seatingHome.events({
   },
   'click .openform':function(event){
   	var height = document.getElementById("inputform").style.height;
-  	if (height == "420px"){
-      document.getElementById("inputform").style.height = "40px"; 	
+  	if (height == "440px"){
+      document.getElementById("inputform").style.height = "60px"; 	
   	}
   	else {
-      document.getElementById("inputform").style.height = "420px"; 
+      document.getElementById("inputform").style.height = "440px"; 
   	}
   },
 });
